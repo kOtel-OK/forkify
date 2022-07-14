@@ -4,12 +4,12 @@ import { getJSON } from './helpers.js';
 export const state = {
   recipe: {},
   allRecipes: [],
-  DOMElements: {
-    recipeContainer: document.querySelector('.recipe'),
-    allRecipesContainer: document.querySelector('.search-results .results'),
-    btnSearch: document.querySelector('.search__btn'),
-    inptSearch: document.querySelector('.search__field'),
-  },
+  //   DOMElements: {
+  //     recipeContainer: document.querySelector('.recipe'),
+  //     allRecipesContainer: document.querySelector('.search-results .results'),
+  //     btnSearch: document.querySelector('.search__btn'),
+  //     inptSearch: document.querySelector('.search__field'),
+  //   },
 };
 
 export const searchRecipe = async function (recipeName) {

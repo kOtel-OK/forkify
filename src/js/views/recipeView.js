@@ -1,13 +1,18 @@
 import icons from '../../img/icons.svg';
+import { DOMElements } from '../config.js';
 
 class RecipeView {
-  #parentElement = document.querySelector('.recipe');
+  //   #parentElement = document.querySelector('.recipe');
   #data;
 
   render(data) {
     this.#data = data;
     const markup = this.#generateMarkup();
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    DOMElements.recipeContainer.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  addHandlerRender(callback) {
+    window.addEventListener('hashchange', callback);
   }
 
   #transformQuantity(qtt) {

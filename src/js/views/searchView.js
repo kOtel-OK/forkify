@@ -1,13 +1,18 @@
 import icons from '../../img/icons.svg';
+import { DOMElements } from '../config.js';
 
 class SearchView {
-  #parentElement = document.querySelector('.search-results .results');
+  //   #parentElement = document.querySelector('.search-results .results');
   #data;
 
   render(data) {
     this.#data = data;
     const markup = this.#generateMarkup();
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    DOMElements.allRecipesContainer.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  addHandlerRender(callback) {
+    DOMElements.btnSearch.addEventListener('click', callback);
   }
 
   #generateMarkup() {

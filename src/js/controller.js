@@ -4,20 +4,11 @@ import searchView from './views/searchView.js';
 import spinner from './views/spinnerView.js';
 import errorMessage from './views/errorView.js';
 import { recipeNameCheck } from './helpers.js';
+import { DOMElements } from './config.js';
 //Polifyling
 import 'core-js/actual';
 import { async } from 'regenerator-runtime';
 // import 'regenerator-runtime/runtime';
-
-const { DOMElements } = model.state;
-
-// const timeout = function (s) {
-//   return new Promise(function (_, reject) {
-//     setTimeout(function () {
-//       reject(new Error(`Request took too long! Timeout after ${s} second`));
-//     }, s * 1000);
-//   });
-// };
 
 const controlRecipe = async function (e) {
   try {
@@ -59,6 +50,9 @@ const controlAllRecipes = async function (e) {
   }
 };
 
-// ['hashchange', 'load'].forEach(el => window.addEventListener(el, controlRecipe));
-window.addEventListener('hashchange', controlRecipe);
-DOMElements.btnSearch.addEventListener('click', controlAllRecipes);
+const init = function () {
+  recipeView.addHandlerRender(controlRecipe);
+  searchView.addHandlerRender(controlAllRecipes);
+};
+
+init();
