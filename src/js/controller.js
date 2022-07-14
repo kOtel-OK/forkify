@@ -3,6 +3,7 @@ import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import spinner from './views/spinnerView.js';
 import errorMessage from './views/errorView.js';
+import { recipeNameCheck } from './helpers.js';
 //Polifyling
 import 'core-js/actual';
 import { async } from 'regenerator-runtime';
@@ -10,15 +11,15 @@ import { async } from 'regenerator-runtime';
 
 const { DOMElements } = model.state;
 
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
+// const timeout = function (s) {
+//   return new Promise(function (_, reject) {
+//     setTimeout(function () {
+//       reject(new Error(`Request took too long! Timeout after ${s} second`));
+//     }, s * 1000);
+//   });
+// };
 
-const showRecipe = async function (e) {
+const controlRecipe = async function (e) {
   try {
     e.preventDefault();
     const id = window.location.hash.slice(1);
@@ -31,30 +32,33 @@ const showRecipe = async function (e) {
     recipeView.render(model.state.recipe);
     spinner.hideSpinner(DOMElements.recipeContainer);
   } catch (error) {
-    errorMessage.showError(DOMElements.recipeContainer);
-    console.error(error);
+    errorMessage.showError(DOMElements.recipeContainer, error.message);
+    console.error(error.message, 'In controlRecipe in controller.js!!!');
   }
 };
 
-const searchRecipe = async function (e) {
+const controlAllRecipes = async function (e) {
   try {
     e.preventDefault();
 
-    const recipeName = model.recipeNameCheck(
+    const recipeName = recipeNameCheck(
       DOMElements.inptSearch.value,
       DOMElements.inptSearch
     );
 
     spinner.showSpinner(DOMElements.allRecipesContainer);
     await model.searchRecipe(recipeName);
+
+    if (model.state.allRecipes.length === 0) throw new Error();
+
     searchView.render(model.state.allRecipes);
     spinner.hideSpinner(DOMElements.allRecipesContainer);
   } catch (error) {
-    errorMessage.showError(DOMElements.allRecipesContainer);
-    console.error(error.message);
+    errorMessage.showError(DOMElements.allRecipesContainer, error.message);
+    console.error(error.message, 'In controlAllRecipes in controller.js!!!');
   }
 };
 
-// ['hashchange', 'load'].forEach(el => window.addEventListener(el, showRecipe));
-window.addEventListener('hashchange', showRecipe);
-DOMElements.btnSearch.addEventListener('click', searchRecipe);
+// ['hashchange', 'load'].forEach(el => window.addEventListener(el, controlRecipe));
+window.addEventListener('hashchange', controlRecipe);
+DOMElements.btnSearch.addEventListener('click', controlAllRecipes);

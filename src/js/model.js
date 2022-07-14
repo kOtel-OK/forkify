@@ -1,4 +1,6 @@
-// import errorMessage from './views/errorView.js';
+import { API_URL } from './config.js';
+import { getJSON } from './helpers.js';
+
 export const state = {
   recipe: {},
   allRecipes: [],
@@ -10,47 +12,19 @@ export const state = {
   },
 };
 
-export const recipeNameCheck = function (recipeName, inputElement) {
-  // check if input contains numbers
-  if (
-    /\D/.test(recipeName) &&
-    !recipeName.includes(' ') &&
-    recipeName.length > 0
-  ) {
-    inputElement.value = '';
-    return recipeName.toLowerCase();
-  } else {
-    inputElement.value = '';
-    throw new Error('No recipes found!');
-  }
-};
-
 export const searchRecipe = async function (recipeName) {
   try {
-    const response = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes?search=${recipeName}`
-    );
-
-    const data = await response.json();
-
-    if (data.results === 0) throw new Error('No recipes found!');
+    const data = await getJSON(`${API_URL}?search=${recipeName}`);
 
     state.allRecipes = data.data.recipes;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
 export const loadRecipe = async function (id) {
   try {
-    // load data
-    const response = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) throw new Error(`${data.message} (${response.status})`);
+    const data = await getJSON(`${API_URL}/${id}`);
 
     state.recipe = {
       id: data.data.recipe.id,
@@ -63,6 +37,6 @@ export const loadRecipe = async function (id) {
       ingredients: data.data.recipe.ingredients,
     };
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };

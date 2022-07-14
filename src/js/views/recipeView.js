@@ -10,6 +10,35 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
+  #transformQuantity(qtt) {
+    if (qtt % 1 === 0) {
+      return qtt;
+    } else {
+      return `1/${Math.trunc(1 / qtt)}`;
+    }
+  }
+
+  #generateIngredients(ingredients) {
+    return ingredients
+      .map(el => {
+        return `
+      <li class="recipe__ingredient">
+      <svg class="recipe__icon">
+          <use href="${icons}#icon-check"></use>
+        </svg>
+        <div class="recipe__quantity">${
+          this.#transformQuantity(el.quantity) || ''
+        }</div>
+        <div class="recipe__description">
+          <span class="recipe__unit">${el.unit || ''}</span>
+          ${el.description}
+        </div>
+        </li>
+        `;
+      })
+      .join('');
+  }
+
   #generateMarkup() {
     return `
     <figure class="recipe__fig">
@@ -70,22 +99,7 @@ class RecipeView {
     <h2 class="heading--2">Recipe ingredients</h2>
 
     <ul class="recipe__ingredient-list">
-    ${this.#data.ingredients
-      .map(el => {
-        return `
-      <li class="recipe__ingredient">
-      <svg class="recipe__icon">
-          <use href="${icons}#icon-check"></use>
-        </svg>
-        <div class="recipe__quantity">${el.quantity || ''}</div>
-        <div class="recipe__description">
-          <span class="recipe__unit">${el.unit || ''}</span>
-          ${el.description}
-        </div>
-        </li>
-        `;
-      })
-      .join('')}
+    ${this.#generateIngredients(this.#data.ingredients)}
     </ul>
   </div>
 
