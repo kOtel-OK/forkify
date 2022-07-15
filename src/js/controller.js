@@ -1,52 +1,58 @@
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
-import spinner from './views/spinnerView.js';
-import errorMessage from './views/errorView.js';
-import { recipeNameCheck } from './helpers.js';
-import { DOMElements } from './config.js';
 //Polifyling
 import 'core-js/actual';
 import { async } from 'regenerator-runtime';
 // import 'regenerator-runtime/runtime';
 
+//Hot Module Replacement
+if (module.hot) {
+  module.hot.accept();
+}
+
 const controlRecipe = async function (e) {
   try {
     e.preventDefault();
     const id = window.location.hash.slice(1);
+    // Guard clause
+    if (!id) return;
 
-    // if (!id) return;
-    spinner.showSpinner(DOMElements.recipeContainer);
-    // loading recipe from model, it returns Promise so...
+    recipeView.showSpinner();
+
+    // Loading recipe from model, it returns Promise so...
     await model.loadRecipe(id);
-    // render recipe
+
+    // Render recipe
     recipeView.render(model.state.recipe);
-    spinner.hideSpinner(DOMElements.recipeContainer);
+
+    recipeView.hideSpinner();
   } catch (error) {
-    errorMessage.showError(DOMElements.recipeContainer, error.message);
-    console.error(error.message, 'In controlRecipe in controller.js!!!');
+    recipeView.showError();
+    console.error(error.message, 'The controlRecipe in the controller.js!!!');
   }
 };
 
 const controlAllRecipes = async function (e) {
   try {
     e.preventDefault();
+    const { search } = model.state;
 
-    const recipeName = recipeNameCheck(
-      DOMElements.inptSearch.value,
-      DOMElements.inptSearch
-    );
+    const recipeName = searchView.getQuery();
 
-    spinner.showSpinner(DOMElements.allRecipesContainer);
+    searchView.showSpinner();
     await model.searchRecipe(recipeName);
 
-    if (model.state.allRecipes.length === 0) throw new Error();
+    if (search.allRecipes.length === 0) throw new Error();
 
-    searchView.render(model.state.allRecipes);
-    spinner.hideSpinner(DOMElements.allRecipesContainer);
+    searchView.render(search.allRecipes);
+    searchView.hideSpinner();
   } catch (error) {
-    errorMessage.showError(DOMElements.allRecipesContainer, error.message);
-    console.error(error.message, 'In controlAllRecipes in controller.js!!!');
+    searchView.showError(error.message);
+    console.error(
+      error.message,
+      'The controlAllRecipes in the controller.js!!!'
+    );
   }
 };
 

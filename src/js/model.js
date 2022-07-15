@@ -3,20 +3,18 @@ import { getJSON } from './helpers.js';
 
 export const state = {
   recipe: {},
-  allRecipes: [],
-  //   DOMElements: {
-  //     recipeContainer: document.querySelector('.recipe'),
-  //     allRecipesContainer: document.querySelector('.search-results .results'),
-  //     btnSearch: document.querySelector('.search__btn'),
-  //     inptSearch: document.querySelector('.search__field'),
-  //   },
+  search: {
+    allRecipes: [],
+    query: '',
+  },
 };
 
 export const searchRecipe = async function (recipeName) {
   try {
     const data = await getJSON(`${API_URL}?search=${recipeName}`);
 
-    state.allRecipes = data.data.recipes;
+    state.search.allRecipes = data.data.recipes;
+    state.search.query = recipeName;
   } catch (error) {
     throw error;
   }

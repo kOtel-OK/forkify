@@ -15,7 +15,6 @@ class ErrorMessage {
     parentElement.innerHTML = '';
     parentElement.insertAdjacentHTML('afterbegin', markup);
   }
-  hideError(parentElement) {}
 }
 
 export default new ErrorMessage();

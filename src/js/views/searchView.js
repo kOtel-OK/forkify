@@ -1,37 +1,35 @@
+import View from './View.js';
 import icons from '../../img/icons.svg';
 import { DOMElements } from '../config.js';
+import { recipeNameCheck } from '../helpers.js';
 
-class SearchView {
-  //   #parentElement = document.querySelector('.search-results .results');
-  #data;
+class SearchView extends View {
+  _parentElement = DOMElements.allRecipesContainer;
+  inptSearch = DOMElements.inptSearch;
+  btnSearch = DOMElements.btnSearch;
 
-  render(data) {
-    this.#data = data;
-    const markup = this.#generateMarkup();
-    DOMElements.allRecipesContainer.insertAdjacentHTML('afterbegin', markup);
+  getQuery() {
+    return recipeNameCheck(this.inptSearch.value, this.inptSearch);
   }
 
+  // Publisher
   addHandlerRender(callback) {
-    DOMElements.btnSearch.addEventListener('click', callback);
+    this.btnSearch.addEventListener('click', callback);
   }
 
-  #generateMarkup() {
-    return this.#data
+  _generateMarkup() {
+    return this._data
       .map(el => {
         return `
       <li class="preview">
-      <a class="preview__link preview__link--active" href="#${el.id}">
+      <a class="preview__link" href="#${el.id}">
         <figure class="preview__fig">
           <img src="${el.image_url}" alt="Test" />
         </figure>
         <div class="preview__data">
           <h4 class="preview__title">${el.title} ...</h4>
           <p class="preview__publisher">${el.publisher}</p>
-          <div class="preview__user-generated">
-            <svg>
-              <use href="${icons}#icon-user"></use>
-            </svg>
-          </div>
+          
         </div>
       </a>
     </li>

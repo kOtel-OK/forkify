@@ -1,21 +1,17 @@
+import View from './View.js';
 import icons from '../../img/icons.svg';
 import { DOMElements } from '../config.js';
 
-class RecipeView {
-  //   #parentElement = document.querySelector('.recipe');
-  #data;
+class RecipeView extends View {
+  _parentElement = DOMElements.recipeContainer;
 
-  render(data) {
-    this.#data = data;
-    const markup = this.#generateMarkup();
-    DOMElements.recipeContainer.insertAdjacentHTML('afterbegin', markup);
-  }
-
+  // Publisher
   addHandlerRender(callback) {
-    window.addEventListener('hashchange', callback);
+    ['hashchange', 'load'].forEach(el => window.addEventListener(el, callback));
+    // window.addEventListener('hashchange', callback);
   }
 
-  #transformQuantity(qtt) {
+  _transformQuantity(qtt) {
     if (qtt % 1 === 0) {
       return qtt;
     } else {
@@ -23,7 +19,7 @@ class RecipeView {
     }
   }
 
-  #generateIngredients(ingredients) {
+  _generateIngredients(ingredients) {
     return ingredients
       .map(el => {
         return `
@@ -32,7 +28,7 @@ class RecipeView {
           <use href="${icons}#icon-check"></use>
         </svg>
         <div class="recipe__quantity">${
-          this.#transformQuantity(el.quantity) || ''
+          this._transformQuantity(el.quantity) || ''
         }</div>
         <div class="recipe__description">
           <span class="recipe__unit">${el.unit || ''}</span>
@@ -44,14 +40,14 @@ class RecipeView {
       .join('');
   }
 
-  #generateMarkup() {
+  _generateMarkup() {
     return `
     <figure class="recipe__fig">
-    <img src="${this.#data.image}" alt="${
-      this.#data.title
+    <img src="${this._data.image}" alt="${
+      this._data.title
     }" class="recipe__img" />
     <h1 class="recipe__title">
-      <span>${this.#data.title}</span>
+      <span>${this._data.title}</span>
     </h1>
   </figure>
 
@@ -61,7 +57,7 @@ class RecipeView {
         <use href="${icons}#icon-clock"></use>
       </svg>
       <span class="recipe__info-data recipe__info-data--minutes">${
-        this.#data.cookingTime
+        this._data.cookingTime
       }</span>
       <span class="recipe__info-text">minutes</span>
     </div>
@@ -70,7 +66,7 @@ class RecipeView {
         <use href="${icons}#icon-users"></use>
       </svg>
       <span class="recipe__info-data recipe__info-data--people">${
-        this.#data.servings
+        this._data.servings
       }</span>
       <span class="recipe__info-text">servings</span>
 
@@ -104,7 +100,7 @@ class RecipeView {
     <h2 class="heading--2">Recipe ingredients</h2>
 
     <ul class="recipe__ingredient-list">
-    ${this.#generateIngredients(this.#data.ingredients)}
+    ${this._generateIngredients(this._data.ingredients)}
     </ul>
   </div>
 
@@ -113,13 +109,13 @@ class RecipeView {
     <p class="recipe__directions-text">
       This recipe was carefully designed and tested by
       <span class="recipe__publisher">${
-        this.#data.publisher
+        this._data.publisher
       }</span>. Please check out
       directions at their website.
     </p>
     <a
       class="btn--small recipe__btn"
-      href="${this.#data.sourceUrl}"
+      href="${this._data.sourceUrl}"
       target="_blank"
     >
       <span>Directions</span>
