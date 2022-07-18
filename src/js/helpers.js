@@ -26,13 +26,10 @@ export const recipeNameCheck = function (recipeName, inputElement) {
   ) {
     inputElement.value = '';
     return recipeName.toLowerCase();
-  } else {
-    inputElement.value = '';
-    throw new Error('Incorrect value! Please check the input data!');
   }
 };
 
-// Reurns Promise as rejected if the request took long time
+// Returns Promise as rejected if the request took long time
 const timeout = function (s) {
   return new Promise(function (_, reject) {
     setTimeout(function () {

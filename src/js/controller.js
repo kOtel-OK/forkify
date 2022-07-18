@@ -1,6 +1,7 @@
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
+import paginationView from './views/paginationView.js';
 //Polifyling
 import 'core-js/actual';
 import { async } from 'regenerator-runtime';
@@ -25,8 +26,6 @@ const controlRecipe = async function (e) {
 
     // Render recipe
     recipeView.render(model.state.recipe);
-
-    recipeView.hideSpinner();
   } catch (error) {
     recipeView.showError();
     console.error(error.message, 'The controlRecipe in the controller.js!!!');
@@ -36,17 +35,22 @@ const controlRecipe = async function (e) {
 const controlAllRecipes = async function (e) {
   try {
     e.preventDefault();
-    const { search } = model.state;
-
+    const { search, pages } = model.state;
     const recipeName = searchView.getQuery();
 
     searchView.showSpinner();
+
     await model.searchRecipe(recipeName);
 
-    if (search.allRecipes.length === 0) throw new Error();
+    if (search.allRecipes.length === 0) {
+      paginationView.clearContainer();
 
-    searchView.render(search.allRecipes);
-    searchView.hideSpinner();
+      throw new Error();
+    }
+
+    pages.currentPage = 1;
+    searchView.render(search.allRecipesSliced[pages.currentPage - 1]);
+    paginationView.renderBtnInit(model.state);
   } catch (error) {
     searchView.showError(error.message);
     console.error(
@@ -56,9 +60,16 @@ const controlAllRecipes = async function (e) {
   }
 };
 
+const controlPagination = function (currentPage) {
+  const { search } = model.state;
+  paginationView.renderBtns();
+  searchView.render(search.allRecipesSliced[currentPage - 1]);
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   searchView.addHandlerRender(controlAllRecipes);
+  paginationView.addHandlerPagination(controlPagination);
 };
 
 init();

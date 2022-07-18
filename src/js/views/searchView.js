@@ -1,5 +1,4 @@
 import View from './View.js';
-import icons from '../../img/icons.svg';
 import { DOMElements } from '../config.js';
 import { recipeNameCheck } from '../helpers.js';
 
