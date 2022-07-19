@@ -11,11 +11,49 @@ class RecipeView extends View {
     // window.addEventListener('hashchange', callback);
   }
 
+  adHandlerServings(calback) {
+    let servingsState = 0;
+    const btnServingsContainer = document.querySelector(
+      '.recipe__info-buttons'
+    );
+
+    btnServingsContainer.addEventListener('click', function (e) {
+      const servBtns = e.target.closest('button');
+
+      if (!servBtns) return;
+
+      if (servBtns.classList.contains('btn--increase-servings')) {
+        servingsState = 1;
+      }
+
+      if (servBtns.classList.contains('btn--decrease-servings')) {
+        servingsState = -1;
+      }
+
+      calback(servingsState);
+    });
+  }
+
+  updateServings() {
+    const ingredientsContainer = document.querySelector(
+      '.recipe__ingredient-list'
+    );
+
+    const servings = document.querySelector('.recipe__info-data--people');
+
+    servings.textContent = this._data.servings;
+    ingredientsContainer.innerHTML = '';
+    ingredientsContainer.insertAdjacentHTML(
+      'afterbegin',
+      this._generateIngredients(this._data.ingredients)
+    );
+  }
+
   _transformQuantity(qtt) {
     if (qtt % 1 === 0) {
       return qtt;
     } else {
-      return `1/${Math.trunc(1 / qtt)}`;
+      return qtt.toFixed(2);
     }
   }
 
@@ -71,7 +109,7 @@ class RecipeView extends View {
       <span class="recipe__info-text">servings</span>
 
       <div class="recipe__info-buttons">
-        <button class="btn--tiny btn--increase-servings">
+        <button class="btn--tiny btn--decrease-servings">
           <svg>
             <use href="${icons}#icon-minus-circle"></use>
           </svg>

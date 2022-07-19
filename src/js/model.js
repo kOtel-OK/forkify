@@ -48,6 +48,25 @@ export const loadRecipe = async function (id) {
   }
 };
 
+export const calculateServings = function (servingsState) {
+  const { recipe } = state;
+  const servingsPrev = recipe.servings;
+
+  recipe.servings += servingsState;
+
+  if (recipe.servings < 1) {
+    recipe.servings++;
+    return;
+  }
+
+  recipe.ingredients.forEach(el => {
+    if (el.quantity) {
+      el.quantity = (el.quantity / servingsPrev) * recipe.servings;
+    }
+    return el;
+  });
+};
+
 const sliceAllRecipes = function (recipesArr) {
   let slicedArr = [];
 

@@ -7,11 +7,6 @@ import 'core-js/actual';
 import { async } from 'regenerator-runtime';
 // import 'regenerator-runtime/runtime';
 
-//Hot Module Replacement
-if (module.hot) {
-  module.hot.accept();
-}
-
 const controlRecipe = async function (e) {
   try {
     e.preventDefault();
@@ -26,6 +21,9 @@ const controlRecipe = async function (e) {
 
     // Render recipe
     recipeView.render(model.state.recipe);
+
+    // Subscriber for changing servings events
+    recipeView.adHandlerServings(controlServings);
   } catch (error) {
     recipeView.showError();
     console.error(error.message, 'The controlRecipe in the controller.js!!!');
@@ -66,6 +64,11 @@ const controlPagination = function (currentPage) {
   searchView.render(search.allRecipesSliced[currentPage - 1]);
 };
 
+const controlServings = function (servingsState) {
+  model.calculateServings(servingsState);
+  recipeView.updateServings();
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   searchView.addHandlerRender(controlAllRecipes);
@@ -73,3 +76,8 @@ const init = function () {
 };
 
 init();
+
+//Hot Module Replacement
+if (module.hot) {
+  module.hot.accept();
+}
