@@ -34,21 +34,6 @@ class RecipeView extends View {
     });
   }
 
-  updateServings() {
-    const ingredientsContainer = document.querySelector(
-      '.recipe__ingredient-list'
-    );
-
-    const servings = document.querySelector('.recipe__info-data--people');
-
-    servings.textContent = this._data.servings;
-    ingredientsContainer.innerHTML = '';
-    ingredientsContainer.insertAdjacentHTML(
-      'afterbegin',
-      this._generateIngredients(this._data.ingredients)
-    );
-  }
-
   _transformQuantity(qtt) {
     if (qtt % 1 === 0) {
       return qtt;
