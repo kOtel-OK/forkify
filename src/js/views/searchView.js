@@ -17,10 +17,12 @@ class SearchView extends View {
   }
 
   _generateMarkup() {
+    const currentID = window.location.hash.slice(1);
+
     return this._data
       .map(el => {
         return `
-      <li class="preview" data-id="${el.id}">
+      <li class="preview ${currentID === el.id ? 'preview__link--active' : ''}">
       <a class="preview__link" href="#${el.id}">
         <figure class="preview__fig">
           <img src="${el.image_url}" alt="Test" />

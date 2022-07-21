@@ -23,7 +23,6 @@ export const searchRecipe = async function (recipeName) {
     state.search.allRecipesSliced = sliceAllRecipes([...data.data.recipes]);
     state.search.query = recipeName;
     state.pages.allPages = state.search.allRecipesSliced.length;
-    // state.pages.currentPage = state.search.allRecipesSliced[0];
   } catch (error) {
     throw error;
   }

@@ -11,18 +11,22 @@ const controlRecipe = async function (e) {
   try {
     e.preventDefault();
     const id = window.location.hash.slice(1);
+    const { search, pages } = model.state;
 
     // Guard clause
     if (!id) return;
 
     recipeView.showSpinner();
 
+    // Update all recipes list to make current recipe active
+    searchView.updateView(search.allRecipesSliced[pages.currentPage - 1]);
+
     // Loading recipe from model, it returns Promise so...
     await model.loadRecipe(id);
 
     // Render recipe
     recipeView.render(model.state.recipe);
-    recipeView.markActiveRecipe();
+
     // Subscriber for changing servings events
     recipeView.adHandlerServings(controlServings);
   } catch (error) {
@@ -60,11 +64,12 @@ const controlAllRecipes = async function (e) {
 };
 
 const controlPagination = function (currentPage) {
-  const { search } = model.state;
+  const { search, pages } = model.state;
+
+  pages.currentPage = currentPage;
 
   paginationView.renderBtns();
   searchView.render(search.allRecipesSliced[currentPage - 1]);
-  recipeView.markActiveRecipe();
 };
 
 const controlServings = function (servingsState) {

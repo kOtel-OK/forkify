@@ -149,18 +149,6 @@ class RecipeView extends View {
     </a>
   </div>`;
   }
-
-  markActiveRecipe() {
-    const elements = Array.from(
-      DOMElements.allRecipesContainer.querySelectorAll('.preview')
-    );
-    const element = elements.filter(el => el.dataset.id === this._data.id);
-
-    elements.forEach(el => el.classList.remove('preview__link--active'));
-
-    // ? - optional chaining to check if element exists
-    element[0]?.classList.add('preview__link--active');
-  }
 }
 
 export default new RecipeView();
