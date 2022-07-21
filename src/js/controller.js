@@ -11,6 +11,7 @@ const controlRecipe = async function (e) {
   try {
     e.preventDefault();
     const id = window.location.hash.slice(1);
+
     // Guard clause
     if (!id) return;
 
@@ -21,7 +22,7 @@ const controlRecipe = async function (e) {
 
     // Render recipe
     recipeView.render(model.state.recipe);
-
+    recipeView.markActiveRecipe();
     // Subscriber for changing servings events
     recipeView.adHandlerServings(controlServings);
   } catch (error) {
@@ -60,8 +61,10 @@ const controlAllRecipes = async function (e) {
 
 const controlPagination = function (currentPage) {
   const { search } = model.state;
+
   paginationView.renderBtns();
   searchView.render(search.allRecipesSliced[currentPage - 1]);
+  recipeView.markActiveRecipe();
 };
 
 const controlServings = function (servingsState) {

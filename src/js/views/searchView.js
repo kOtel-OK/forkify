@@ -20,7 +20,7 @@ class SearchView extends View {
     return this._data
       .map(el => {
         return `
-      <li class="preview">
+      <li class="preview" data-id="${el.id}">
       <a class="preview__link" href="#${el.id}">
         <figure class="preview__fig">
           <img src="${el.image_url}" alt="Test" />
@@ -28,7 +28,7 @@ class SearchView extends View {
         <div class="preview__data">
           <h4 class="preview__title">${el.title} ...</h4>
           <p class="preview__publisher">${el.publisher}</p>
-          
+
         </div>
       </a>
     </li>

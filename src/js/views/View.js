@@ -41,6 +41,13 @@ export default class View {
       ) {
         currentElement.textContent = newElement.textContent;
       }
+
+      // Replacing of attributes (class, data...)
+      if (!newElement.isEqualNode(currentElement)) {
+        Array.from(newElement.attributes).forEach(attr =>
+          currentElement.setAttribute(attr.name, attr.value)
+        );
+      }
     });
   }
 

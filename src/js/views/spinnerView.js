@@ -13,9 +13,6 @@ class Spinner {
     parentElement.innerHTML = '';
     parentElement.insertAdjacentHTML('afterbegin', markup);
   }
-  // hideSpinner(parentElement) {
-  //   parentElement.querySelector('.spinner').remove();
-  // }
 }
 
 export default new Spinner();
