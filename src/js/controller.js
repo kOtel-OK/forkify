@@ -2,6 +2,7 @@ import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import paginationView from './views/paginationView.js';
+import bookmarkView from './views/bookmarkView.js';
 //Polifyling
 import 'core-js/actual';
 import { async } from 'regenerator-runtime';
@@ -26,9 +27,6 @@ const controlRecipe = async function (e) {
 
     // Render recipe
     recipeView.render(model.state.recipe);
-
-    // Subscriber for changing servings events
-    recipeView.adHandlerServings(controlServings);
   } catch (error) {
     recipeView.showError();
     console.error(error.message, 'The controlRecipe in the controller.js!!!');
@@ -51,7 +49,6 @@ const controlAllRecipes = async function (e) {
       throw new Error();
     }
 
-    pages.currentPage = 1;
     searchView.render(search.allRecipesSliced[pages.currentPage - 1]);
     paginationView.renderBtnInit(model.state);
   } catch (error) {
@@ -77,10 +74,34 @@ const controlServings = function (servingsState) {
   recipeView.updateView(model.state.recipe);
 };
 
+const controlBookmark = function () {
+  const { recipe, bookmarks } = model.state;
+
+  if (Object.keys(recipe).length === 0) return;
+
+  if (bookmarks.some(el => el.id === recipe.id)) {
+    model.removeBookmark(recipe.id);
+    recipeView.updateView(model.state.recipe);
+  } else {
+    model.addBookmark(recipe);
+    recipeView.updateView(model.state.recipe);
+  }
+
+  bookmarkView.render(model.state);
+
+  if (bookmarks.length === 0) {
+    bookmarkView.showMessage(
+      'No bookmarks yet. Find a nice recipe and bookmark it :)'
+    );
+  }
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   searchView.addHandlerRender(controlAllRecipes);
   paginationView.addHandlerPagination(controlPagination);
+  recipeView.adHandlerServings(controlServings);
+  bookmarkView.addHandlerBookmark(controlBookmark);
 };
 
 init();

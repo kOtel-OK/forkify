@@ -1,5 +1,6 @@
 import spinner from './spinnerView';
 import error from './errorView';
+import message from './messageView';
 
 export default class View {
   _data;
@@ -12,8 +13,12 @@ export default class View {
     return spinner.hideSpinner(this._parentElement);
   }
 
-  showError(message) {
-    return error.showError(this._parentElement, message);
+  showError(err) {
+    return error.showError(this._parentElement, err);
+  }
+
+  showMessage(msg) {
+    return message.showMessage(this._parentElement, msg);
   }
 
   updateView(data) {
@@ -22,7 +27,6 @@ export default class View {
 
     // Create the virtual copy of all nodes
     const newDOM = document.createRange().createContextualFragment(newMarkup);
-
     //Create arrays with all new and current nodes
     const currentElements = Array.from(
       this._parentElement.querySelectorAll('*')

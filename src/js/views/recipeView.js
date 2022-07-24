@@ -14,11 +14,12 @@ class RecipeView extends View {
 
   adHandlerServings(calback) {
     let servingsState = 0;
-    const btnServingsContainer = document.querySelector(
-      '.recipe__info-buttons'
-    );
+    // const btnServingsContainer = document.querySelector(
+    //   '.recipe__info-buttons'
+    // );
 
-    btnServingsContainer.addEventListener('click', function (e) {
+    // btnServingsContainer.addEventListener('click', function (e) {
+    this._parentElement.addEventListener('click', function (e) {
       const servBtns = e.target.closest('button');
 
       if (!servBtns) return;
@@ -113,9 +114,12 @@ class RecipeView extends View {
         <use href="${icons}#icon-user"></use>
       </svg>
     </div>
-    <button class="btn--round">
+    <button class="btn--round btn--bookmark">
       <svg class="">
-        <use href="${icons}#icon-bookmark-fill"></use>
+      
+        <use href="${icons}#${
+      this._data.bookmarked === true ? `icon-bookmark-fill` : `icon-bookmark`
+    }"></use>
       </svg>
     </button>
   </div>

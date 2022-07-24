@@ -4,16 +4,16 @@ import { recipeNameCheck } from '../helpers.js';
 
 class SearchView extends View {
   _parentElement = DOMElements.allRecipesContainer;
-  inptSearch = DOMElements.inptSearch;
-  btnSearch = DOMElements.btnSearch;
+  _inptSearch = DOMElements.inptSearch;
+  _btnSearch = DOMElements.btnSearch;
 
   getQuery() {
-    return recipeNameCheck(this.inptSearch.value, this.inptSearch);
+    return recipeNameCheck(this._inptSearch.value, this._inptSearch);
   }
 
   // Publisher
   addHandlerRender(callback) {
-    this.btnSearch.addEventListener('click', callback);
+    this._btnSearch.addEventListener('click', callback);
   }
 
   _generateMarkup() {
@@ -25,7 +25,7 @@ class SearchView extends View {
       <li class="preview ${currentID === el.id ? 'preview__link--active' : ''}">
       <a class="preview__link" href="#${el.id}">
         <figure class="preview__fig">
-          <img src="${el.image_url}" alt="Test" />
+          <img src="${el.image_url}" alt="${el.title}" />
         </figure>
         <div class="preview__data">
           <h4 class="preview__title">${el.title} ...</h4>
