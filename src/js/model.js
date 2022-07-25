@@ -20,9 +20,21 @@ export const searchRecipe = async function (recipeName) {
   try {
     const data = await getJSON(`${API_URL}?search=${recipeName}`);
 
-    state.search.allRecipes = data.data.recipes;
-    state.search.allRecipesSliced = sliceAllRecipes([...data.data.recipes]);
+    state.search.allRecipes = data.data.recipes.map(el => {
+      return {
+        id: el.id,
+        image: el.image_url,
+        publisher: el.publisher,
+        title: el.title,
+      };
+    });
+
+    state.search.allRecipesSliced = sliceAllRecipes([
+      ...state.search.allRecipes,
+    ]);
+
     state.search.query = recipeName;
+
     state.pages.allPages = state.search.allRecipesSliced.length;
 
     state.pages.currentPage = 1;
@@ -97,4 +109,16 @@ export const removeBookmark = function (id) {
   const idx = state.bookmarks.findIndex(el => el.id === id);
   state.bookmarks.splice(idx, 1);
   state.recipe.bookmarked = false;
+};
+
+export const setLocalStorage = function () {
+  window.localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+};
+
+export const getLocalStorage = function () {
+  const storage = window.localStorage;
+
+  if (!storage.getItem('bookmarks')) return;
+
+  state.bookmarks = JSON.parse(storage.getItem('bookmarks'));
 };

@@ -7,18 +7,12 @@ class RecipeView extends View {
 
   // Publisher
   addHandlerRender(callback) {
-    // ['hashchange', 'load'].forEach(el => window.addEventListener(el, callback));
-    // window.addEventListener('hashchange', callback);
-    window.addEventListener('hashchange', callback);
+    ['hashchange', 'load'].forEach(el => window.addEventListener(el, callback));
   }
 
   adHandlerServings(calback) {
     let servingsState = 0;
-    // const btnServingsContainer = document.querySelector(
-    //   '.recipe__info-buttons'
-    // );
 
-    // btnServingsContainer.addEventListener('click', function (e) {
     this._parentElement.addEventListener('click', function (e) {
       const servBtns = e.target.closest('button');
 

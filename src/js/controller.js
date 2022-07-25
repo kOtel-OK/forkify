@@ -27,6 +27,9 @@ const controlRecipe = async function (e) {
 
     // Render recipe
     recipeView.render(model.state.recipe);
+
+    // Update bookmarks
+    bookmarkView.updateView(model.state.bookmarks);
   } catch (error) {
     recipeView.showError();
     console.error(error.message, 'The controlRecipe in the controller.js!!!');
@@ -87,16 +90,26 @@ const controlBookmark = function () {
     recipeView.updateView(model.state.recipe);
   }
 
-  bookmarkView.render(model.state);
+  model.setLocalStorage();
+
+  bookmarkView.render(model.state.bookmarks);
 
   if (bookmarks.length === 0) {
-    bookmarkView.showMessage(
-      'No bookmarks yet. Find a nice recipe and bookmark it :)'
-    );
+    bookmarkView.showMessage();
   }
 };
 
+controlLocalStorage = function () {
+  model.getLocalStorage();
+
+  if (!model.state.bookmarks.length) return;
+
+  bookmarkView.render(model.state.bookmarks);
+};
+
 const init = function () {
+  controlLocalStorage();
+
   recipeView.addHandlerRender(controlRecipe);
   searchView.addHandlerRender(controlAllRecipes);
   paginationView.addHandlerPagination(controlPagination);

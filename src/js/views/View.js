@@ -4,6 +4,7 @@ import message from './messageView';
 
 export default class View {
   _data;
+  _message;
 
   showSpinner() {
     return spinner.showSpinner(this._parentElement);
@@ -17,11 +18,13 @@ export default class View {
     return error.showError(this._parentElement, err);
   }
 
-  showMessage(msg) {
-    return message.showMessage(this._parentElement, msg);
+  showMessage() {
+    return message.showMessage(this._parentElement, this._message);
   }
 
   updateView(data) {
+    if (!data) return;
+
     this._data = data;
     const newMarkup = this._generateMarkup();
 
@@ -58,6 +61,7 @@ export default class View {
   render(data) {
     this._data = data;
     const markup = this._generateMarkup();
+
     this._parentElement.innerHTML = '';
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
