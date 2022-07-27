@@ -61,8 +61,9 @@ export default class View {
   render(data) {
     this._data = data;
     const markup = this._generateMarkup();
-
     this._parentElement.innerHTML = '';
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
+
+    if (data.id) window.location.hash = data.id;
   }
 }

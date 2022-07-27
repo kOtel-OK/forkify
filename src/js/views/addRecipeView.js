@@ -8,10 +8,6 @@ class UserRecipe extends View {
   _addRecipeWindow;
   _message = 'Your recipe was successfully uploaded!';
 
-  //   constructor() {
-  //     this.addHandlerShowForm();
-  //   }
-
   showForm() {
     const markup = `
     <div class="add-recipe-window">

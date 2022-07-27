@@ -1,4 +1,5 @@
 import View from './View.js';
+import icons from '../../img/icons.svg';
 
 class PreviewView extends View {
   _generateMarkup(data) {
@@ -19,6 +20,11 @@ class PreviewView extends View {
           <p class="preview__publisher">${el.publisher}</p>
 
         </div>
+        <div class="recipe__user-generated ${!el.key ? `hidden` : ''}">
+        <svg>
+          <use href="${icons}#icon-user"></use>
+        </svg>
+      </div>
       </a>
     </li>
       `;
