@@ -17,6 +17,27 @@ export const getJSON = async function (url) {
   }
 };
 
+export const sendJSON = async function (url, uploadData) {
+  try {
+    const response = await Promise.race([
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // Tell API, that our data is in JSON format
+        },
+        body: JSON.stringify(uploadData), // Our data in JSON format
+      }),
+      timeout(TIMIOUT_FETCH_SEC),
+    ]);
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(`${data.message} (${response.status})`);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const recipeNameCheck = function (recipeName, inputElement) {
   // Check if input contains numbers & empty strings
   if (

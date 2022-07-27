@@ -19,6 +19,7 @@ class Message {
     ${this._message}
     `;
 
+    this._parentElement.innerHTML = '';
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 }

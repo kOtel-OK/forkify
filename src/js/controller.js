@@ -1,11 +1,14 @@
 import * as model from './model.js';
+import { MESSAGE_CLOSE_SEC } from './config.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import paginationView from './views/paginationView.js';
 import bookmarkView from './views/bookmarkView.js';
+import userRecipeView from './views/addRecipeView.js';
 //Polifyling
 import 'core-js/actual';
 import { async } from 'regenerator-runtime';
+import addRecipeView from './views/addRecipeView.js';
 // import 'regenerator-runtime/runtime';
 
 const controlRecipe = async function (e) {
@@ -107,6 +110,28 @@ controlLocalStorage = function () {
   bookmarkView.render(model.state.bookmarks);
 };
 
+const controlAddRecipeForm = function () {
+  addRecipeView.showForm();
+  addRecipeView.addHandlerUpload(controlAddRecipe);
+};
+
+const controlAddRecipe = async function (newRecipe) {
+  try {
+    addRecipeView.showSpinner();
+    await model.uploadRecipe(newRecipe);
+    recipeView.render(model.state.recipe);
+    bookmarkView.render(model.state.bookmarks);
+    addRecipeView.showMessage();
+
+    setTimeout(function () {
+      addRecipeView.hideForm();
+    }, MESSAGE_CLOSE_SEC * 1000);
+  } catch (error) {
+    addRecipeView.showError(error);
+    console.error(error);
+  }
+};
+
 const init = function () {
   controlLocalStorage();
 
@@ -115,6 +140,7 @@ const init = function () {
   paginationView.addHandlerPagination(controlPagination);
   recipeView.adHandlerServings(controlServings);
   bookmarkView.addHandlerBookmark(controlBookmark);
+  addRecipeView.addHandlerShowForm(controlAddRecipeForm);
 };
 
 init();

@@ -1,6 +1,21 @@
-import { API_URL } from './config.js';
+import { API_URL, API_KEY } from './config.js';
 import { RESULTS_PER_PAGE } from './config.js';
-import { getJSON } from './helpers.js';
+import { getJSON, sendJSON } from './helpers.js';
+
+const createRecipeObject = function (obj) {
+  state.recipe = {
+    id: obj.id,
+    title: obj.title,
+    publisher: obj.publisher,
+    sourceUrl: obj.source_url,
+    image: obj.image_url,
+    servings: obj.servings,
+    cookingTime: obj.cooking_time,
+    ingredients: obj.ingredients,
+    ...(obj.key && { key: obj.key }),
+    ...(obj.createdAt && { key: obj.createdAt }),
+  };
+};
 
 export const state = {
   recipe: {},
@@ -47,20 +62,53 @@ export const loadRecipe = async function (id) {
   try {
     const data = await getJSON(`${API_URL}/${id}`);
 
-    state.recipe = {
-      id: data.data.recipe.id,
-      title: data.data.recipe.title,
-      publisher: data.data.recipe.publisher,
-      sourceUrl: data.data.recipe.source_url,
-      image: data.data.recipe.image_url,
-      servings: data.data.recipe.servings,
-      cookingTime: data.data.recipe.cooking_time,
-      ingredients: data.data.recipe.ingredients,
-    };
+    createRecipeObject(data.data.recipe);
 
     state.bookmarks.forEach(el => {
       if (el.id === state.recipe.id) state.recipe.bookmarked = true;
     });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const uploadRecipe = async function (newRecipe) {
+  try {
+    const recipe = {
+      ingredients: [],
+    };
+
+    let [recipeData, ingredients] = [...newRecipe];
+
+    recipeData = recipeData.querySelectorAll('input');
+    ingredients = ingredients.querySelectorAll('input');
+
+    // Parse data to recipe object
+    [...recipeData].forEach(el => {
+      recipe[el.name] = Number.parseFloat(el.value) || el.value;
+    });
+
+    // Parse ingredients to resipe object
+    [...ingredients].forEach(el => {
+      // If recipe field not empty
+      if (el.value) {
+        const val = el.value.split(',');
+        // If number of ingredients is 3
+        if (val.length === 3) {
+          recipe.ingredients.push({
+            quantity: Number.parseFloat(val[0]) || null,
+            unit: val[1],
+            description: val[2],
+          });
+        } else throw new Error('Not valid ingredients format');
+      }
+    });
+
+    const data = await sendJSON(`${API_URL}?key=${API_KEY}`, recipe);
+
+    createRecipeObject(data.data.recipe);
+    addBookmark(state.recipe);
+    setLocalStorage();
   } catch (error) {
     throw error;
   }
