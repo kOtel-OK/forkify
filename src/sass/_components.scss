@@ -92,11 +92,12 @@
 
 .btn--round {
   background-image: $gradient;
+  margin: 0 0.5rem;
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  height: 4.5rem;
-  width: 4.5rem;
+  height: 3.5rem;
+  width: 3.5rem;
   // margin-left: auto;
   transition: all 0.2s;
 
@@ -113,8 +114,8 @@
   }
 
   svg {
-    height: 2.5rem;
-    width: 2.5rem;
+    height: 2rem;
+    width: 2rem;
     fill: #fff;
   }
 }

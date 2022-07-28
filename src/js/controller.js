@@ -96,10 +96,6 @@ const controlBookmark = function () {
   model.setLocalStorage();
 
   bookmarkView.render(model.state.bookmarks);
-
-  if (bookmarks.length === 0) {
-    bookmarkView.showMessage();
-  }
 };
 
 controlLocalStorage = function () {
@@ -132,6 +128,21 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
+const controlRemoveRecipe = function () {
+  // Remove from API
+  model.removeRecipe(model.state.recipe);
+  // Remove bookmark from Bookmarks array
+  model.removeBookmark(model.state.recipe.id);
+  // Reset the local storage
+  model.setLocalStorage();
+  // Update bookmarks view
+  bookmarkView.render(model.state.bookmarks);
+  // Clear the adress panel
+  window.history.pushState('null', '', '/');
+  // Clear the recipe container
+  recipeView.clear();
+};
+
 const init = function () {
   controlLocalStorage();
 
@@ -141,6 +152,7 @@ const init = function () {
   recipeView.adHandlerServings(controlServings);
   bookmarkView.addHandlerBookmark(controlBookmark);
   addRecipeView.addHandlerShowForm(controlAddRecipeForm);
+  recipeView.addHandlerRemove(controlRemoveRecipe);
 };
 
 init();

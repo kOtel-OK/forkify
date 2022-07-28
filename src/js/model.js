@@ -1,3 +1,4 @@
+import { async } from 'regenerator-runtime';
 import { API_URL, API_KEY } from './config.js';
 import { RESULTS_PER_PAGE } from './config.js';
 import { getJSON, sendJSON } from './helpers.js';
@@ -117,6 +118,19 @@ export const uploadRecipe = async function (newRecipe) {
   }
 };
 
+export const removeRecipe = async function (recipe) {
+  try {
+    await fetch(`${API_URL}/${recipe.id}?key=${API_KEY}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json', // Tell API, that our data is in JSON format
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const calculateServings = function (servingsState) {
   const { recipe } = state;
   const servingsPrev = recipe.servings;
@@ -173,3 +187,14 @@ export const getLocalStorage = function () {
 
   state.bookmarks = JSON.parse(storage.getItem('bookmarks'));
 };
+
+/**
+ * TODO
+ * 1. Display number of pages between pagination buttons
+ * 2. Perform ingredient validation in view, before sending the form
+ * 3. Let user adding quantity of ingredients
+ * 4. Shopping List feature - adding ingredients to list
+ * 5. Weekly meal planning feature
+ * 6. Get nutrition data (https://spoonacular.com/food-api) and calculate total calories of recipe
+ * 7. Ability to remove own recipies from API
+ */

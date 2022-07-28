@@ -22,6 +22,10 @@ export default class View {
     return message.showMessage(this._parentElement, this._message);
   }
 
+  clear() {
+    this._parentElement.innerHTML = '';
+  }
+
   updateView(data) {
     if (!data) return;
 
@@ -57,12 +61,21 @@ export default class View {
       }
     });
   }
-
+  /**
+   * Render recieved object to the DOM
+   * @param {Object | Object[]} data The data to be rendered (e.g. Recipe)
+   * @this {Object} View instance
+   * @todo Finish implemantation
+   */
   render(data) {
     this._data = data;
     const markup = this._generateMarkup();
     this._parentElement.innerHTML = '';
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
+
+    if (Array.isArray(data) && data.length === 0) {
+      this.showMessage();
+    }
 
     if (data.id) window.location.hash = data.id;
   }

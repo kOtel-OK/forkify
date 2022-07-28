@@ -10,6 +10,17 @@ class RecipeView extends View {
     ['hashchange', 'load'].forEach(el => window.addEventListener(el, callback));
   }
 
+  addHandlerRemove(callback) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btnRemove = e.target.closest('button');
+
+      if (!btnRemove) return;
+      if (btnRemove.classList.contains('btn--recipe__remove')) {
+        callback();
+      }
+    });
+  }
+
   adHandlerServings(calback) {
     let servingsState = 0;
 
@@ -108,6 +119,13 @@ class RecipeView extends View {
         <use href="${icons}#icon-user"></use>
       </svg>
     </div>
+    <button class="btn--round btn--recipe__remove ${
+      !this._data.key ? `hidden` : ''
+    }">
+    <svg>
+      <use href="${icons}#icon-minus-circle"></use>
+    </svg>
+  </button>
     <button class="btn--round btn--bookmark">
       <svg class="">
       
