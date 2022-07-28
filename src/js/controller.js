@@ -28,6 +28,9 @@ const controlRecipe = async function (e) {
     // Loading recipe from model, it returns Promise so...
     await model.loadRecipe(id);
 
+    // Hide main screen
+    recipeView.hideMainCover();
+
     // Render recipe
     recipeView.render(model.state.recipe);
 
@@ -141,6 +144,8 @@ const controlRemoveRecipe = function () {
   window.history.pushState('null', '', '/');
   // Clear the recipe container
   recipeView.clear();
+  // Show main cover
+  recipeView.showMainCover();
 };
 
 const init = function () {

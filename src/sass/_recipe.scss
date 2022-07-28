@@ -1,29 +1,17 @@
 .recipe {
   background-color: $color-grey-light-1;
 
+  &__container {
+    background: url(../img/recipe_cover.jpeg);
+    background-size: cover;
+  }
+
   ///////////
   // FIGURE
   &__fig {
     height: 32rem;
     position: relative;
-    // transform: scale(1.04) translateY(-1px);
     transform-origin: top;
-
-    &::before {
-      content: '';
-      display: block;
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-image: linear-gradient(
-        to right bottom,
-        $color-grad-1,
-        $color-grad-2
-      );
-      opacity: 0.6;
-    }
   }
 
   &__img {
@@ -38,7 +26,7 @@
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 20%) skewY(-6deg);
-    color: #fff;
+    color: #600a01;
     font-weight: 700;
     font-size: 3.25rem;
     text-transform: uppercase;

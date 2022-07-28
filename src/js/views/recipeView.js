@@ -165,6 +165,14 @@ class RecipeView extends View {
     </a>
   </div>`;
   }
+
+  showMainCover() {
+    this._parentElement.classList.add('recipe__container');
+  }
+
+  hideMainCover() {
+    this._parentElement.classList.remove('recipe__container');
+  }
 }
 
 export default new RecipeView();

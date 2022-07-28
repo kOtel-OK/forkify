@@ -16,17 +16,17 @@ class UserRecipe extends View {
         <div class="upload__column">
           <h3 class="upload__heading">Recipe data</h3>
           <label>Title</label>
-          <input value="TEST23" required name="title" type="text" />
+          <input value="" required name="title" type="text" />
           <label>URL</label>
-          <input value="TEST23" required name="source_url" type="text" />
+          <input value="" required name="source_url" type="text" />
           <label>Image URL</label>
-          <input value="TEST23" required name="image_url" type="text" />
+          <input value="" required name="image_url" type="text" />
           <label>Publisher</label>
-          <input value="TEST23" required name="publisher" type="text" />
+          <input value="" required name="publisher" type="text" />
           <label>Prep time</label>
-          <input value="23" required name="cooking_time" type="number" />
+          <input value="" required name="cooking_time" type="number" />
           <label>Servings</label>
-          <input value="23" required name="servings" type="number" />
+          <input value="" required name="servings" type="number" />
         </div>
 
         <div class="upload__column">

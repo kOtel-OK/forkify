@@ -70,7 +70,12 @@ export default class View {
   render(data) {
     this._data = data;
     const markup = this._generateMarkup();
-    this._parentElement.innerHTML = '';
+
+    // if (this._parentElement.classList.contains('recipe__container')) {
+    //   this._parentElement.classList.remove('recipe__container');
+    // }
+
+    this.clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
 
     if (Array.isArray(data) && data.length === 0) {
