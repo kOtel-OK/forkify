@@ -101,7 +101,7 @@ const controlBookmark = function () {
   bookmarkView.render(model.state.bookmarks);
 };
 
-controlLocalStorage = function () {
+const controlLocalStorage = function () {
   model.getLocalStorage();
 
   if (!model.state.bookmarks.length) return;
