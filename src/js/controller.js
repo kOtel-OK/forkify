@@ -53,7 +53,7 @@ const controlAllRecipes = async function (e) {
     await model.searchRecipe(recipeName);
 
     if (search.allRecipes.length === 0) {
-      paginationView.clearContainer();
+      paginationView.clearBtns();
 
       throw new Error();
     }

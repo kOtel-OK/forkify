@@ -3,15 +3,27 @@ import icons from '../../img/icons.svg';
 
 class Pagination {
   _parentElement = DOMElements.paginationContainer;
+  _btnPrev = this._parentElement.querySelector(
+    '.container__pagination__btn--prev'
+  );
+  _btnNext = this._parentElement.querySelector(
+    '.container__pagination__btn--next'
+  );
+  _btnOther = this._parentElement.querySelector(
+    '.container__pagination__btn--other'
+  );
+
   _data;
   currentPage;
 
-  clearContainer() {
-    this._parentElement.innerHTML = '';
+  clearBtns() {
+    this._parentElement.querySelectorAll('div').forEach(el => {
+      el.innerHTML = '';
+    });
   }
 
   markupPrev() {
-    return `
+    const markup = `
     <button class="btn--inline pagination__btn--prev">
     <svg class="search__icon">
     <use href="${icons}#icon-arrow-left"></use>
@@ -19,10 +31,12 @@ class Pagination {
     <span>Page ${this.currentPage - 1}</span> 
     </button>
     `;
+
+    this._btnPrev.insertAdjacentHTML('afterbegin', markup);
   }
 
   markupNext() {
-    return `
+    const markup = `
     <button class="btn--inline pagination__btn--next">
         <span>Page ${this.currentPage + 1}</span>
         <svg class="search__icon">
@@ -30,28 +44,36 @@ class Pagination {
         </svg>
     </button>
     `;
+    this._btnNext.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  markupOther() {
+    const markup = `<div>Page ${this.currentPage} of ${this._data.pages.allPages}</div>`;
+    this._btnOther.insertAdjacentHTML('afterbegin', markup);
   }
 
   renderBtnInit(data) {
     this._data = data;
     this.currentPage = this._data.pages.currentPage;
-    this._parentElement.innerHTML = '';
 
     if (this._data.pages.allPages < 2) return;
 
-    this._parentElement.insertAdjacentHTML('afterbegin', this.markupNext());
+    this.renderBtns();
   }
 
   renderBtns() {
-    this._parentElement.innerHTML = '';
+    this.clearBtns();
 
     if (this.currentPage === 1) {
-      this._parentElement.insertAdjacentHTML('afterbegin', this.markupNext());
+      this.markupOther();
+      this.markupNext();
     } else if (this.currentPage === this._data.pages.allPages) {
-      this._parentElement.insertAdjacentHTML('afterbegin', this.markupPrev());
+      this.markupPrev();
+      this.markupOther();
     } else {
-      this._parentElement.insertAdjacentHTML('afterbegin', this.markupPrev());
-      this._parentElement.insertAdjacentHTML('afterbegin', this.markupNext());
+      this.markupPrev();
+      this.markupOther();
+      this.markupNext();
     }
   }
 

@@ -23,3 +23,24 @@ class SearchView extends View {
 }
 
 export default new SearchView();
+
+function binarySearch(arr, n) {
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left <= right) {
+    let middle = Math.floor((left + right) / 2);
+
+    if (arr[middle] === n) return middle;
+
+    if (n < arr[middle]) {
+      right = middle - 1;
+    } else {
+      left = middle + 1;
+    }
+  }
+
+  return -1;
+}
+
+binarySearch([1, 3, 5, 12, 34, 35, 43, 50], 43); //6

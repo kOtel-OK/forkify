@@ -65,15 +65,10 @@ export default class View {
    * Render recieved object to the DOM
    * @param {Object | Object[]} data The data to be rendered (e.g. Recipe)
    * @this {Object} View instance
-   * @todo Finish implemantation
    */
   render(data) {
     this._data = data;
     const markup = this._generateMarkup();
-
-    // if (this._parentElement.classList.contains('recipe__container')) {
-    //   this._parentElement.classList.remove('recipe__container');
-    // }
 
     this.clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);

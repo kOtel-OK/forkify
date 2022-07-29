@@ -12,6 +12,10 @@
 .pagination {
   margin-top: auto;
   padding: 0 3.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
 
   &::after {
     content: '';
@@ -27,6 +31,11 @@
       float: right;
     }
   }
+}
+
+.container__pagination__btn--other {
+  color: #600a01;
+  font-size: 1.3rem;
 }
 
 .copyright {
