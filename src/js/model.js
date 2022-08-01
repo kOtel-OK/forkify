@@ -190,11 +190,11 @@ export const getLocalStorage = function () {
 
 /**
  * TODO
- * 1. Display number of pages between pagination buttons
+ * 1. Display number of pages between pagination buttons ----------DONE!
  * 2. Perform ingredient validation in view, before sending the form
- * 3. Let user adding quantity of ingredients
+ * 3. Let user adding numbers of ingredients  ----------DONE!
  * 4. Shopping List feature - adding ingredients to list
  * 5. Weekly meal planning feature
  * 6. Get nutrition data (https://spoonacular.com/food-api) and calculate total calories of recipe
- * 7. Ability to remove own recipies from API
+ * 7. Ability to remove own recipies from API ----------DONE!
  */
